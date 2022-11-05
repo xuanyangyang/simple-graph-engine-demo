@@ -7,6 +7,8 @@ import java.util.Random;
 
 /**
  * 模拟耗时处理
+ *
+ * @author xuanyangyang
  */
 public class RandomSleepTask implements Task {
     private final String name;

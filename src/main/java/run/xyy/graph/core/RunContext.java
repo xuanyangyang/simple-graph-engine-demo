@@ -2,6 +2,8 @@ package run.xyy.graph.core;
 
 /**
  * 运行上下文
+ *
+ * @author xuanyangyang
  */
 public interface RunContext {
     /**

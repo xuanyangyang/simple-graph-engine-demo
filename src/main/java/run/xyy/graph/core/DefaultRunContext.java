@@ -3,6 +3,11 @@ package run.xyy.graph.core;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * 默认运行上下文
+ *
+ * @author xuanyangyang
+ */
 public class DefaultRunContext implements RunContext {
     private final ConcurrentMap<String, Object> resultMap = new ConcurrentHashMap<>();
 

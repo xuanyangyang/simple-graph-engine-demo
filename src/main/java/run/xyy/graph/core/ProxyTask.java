@@ -2,6 +2,12 @@ package run.xyy.graph.core;
 
 import run.xyy.graph.utils.PrintUtils;
 
+/**
+ * 代理任务
+ * 这里可以做的事情很多...充分想象
+ *
+ * @author xuanyangyang
+ */
 public class ProxyTask implements Task {
     private final Task task;
 
