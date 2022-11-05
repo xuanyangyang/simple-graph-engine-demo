@@ -1,10 +1,13 @@
-package run.xyy.graph.core.task;
+package run.xyy.graph.task;
 
-import run.xyy.graph.core.RunContext;
 import run.xyy.graph.core.Task;
+import run.xyy.graph.utils.PrintUtils;
 
 import java.util.Random;
 
+/**
+ * 模拟耗时处理
+ */
 public class RandomSleepTask implements Task {
     private final String name;
 
@@ -13,16 +16,16 @@ public class RandomSleepTask implements Task {
     }
 
     @Override
-    public Object run(RunContext context) {
+    public Object run() {
         Random random = new Random();
         long value = random.nextLong(1000, 3000);
-        System.out.println("任务:" + name + "准备休眠" + value + "毫秒");
+        PrintUtils.print("开始运行，预计耗时" + value + "毫秒");
         try {
-            Thread.sleep(random.nextLong(1000, 5000));
+            Thread.sleep(value);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("任务:" + name + "结束休眠");
+        PrintUtils.print("任务:" + name + "已经完成");
         return name;
     }
 }

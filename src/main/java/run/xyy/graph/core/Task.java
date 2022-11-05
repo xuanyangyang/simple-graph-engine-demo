@@ -1,6 +1,8 @@
-package run.xyy.graph;
+package run.xyy.graph.core;
 
-public class Task {
-
-    public void depond
+/**
+ * 任务
+ */
+public interface Task {
+    Object run();
 }
