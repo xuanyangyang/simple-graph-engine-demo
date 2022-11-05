@@ -1,2 +1,3 @@
-# simple-graph-engine-demo
-图引擎demo
+# 图引擎demo
+本项目主要用来学习图引擎执行原理，后续将实现一个完整的图引擎
+## 
