@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  */
 public class PrintUtils {
 
-    public static void print(String msg) {
+    public static void print(Object msg) {
         System.out.println(LocalDateTime.now() + " " + Thread.currentThread().getName() + " " + msg);
     }
 }

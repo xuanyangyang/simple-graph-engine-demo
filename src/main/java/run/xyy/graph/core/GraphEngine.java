@@ -18,6 +18,15 @@ public class GraphEngine {
      * 任务 -> 依赖的任务
      */
     private final Map<String, Set<Task>> taskMap = new HashMap<>();
+//    /**
+//     * 入边
+//     */
+//    private final Map<String, Set<String>> inEdgeMap = new HashMap<>();
+//    /**
+//     * 出边
+//     * 用于判断是否有环
+//     */
+//    private final Map<String, Set<String>> outEdgeMap = new HashMap<>();
 
     /**
      * 添加任务
@@ -81,6 +90,11 @@ public class GraphEngine {
      * @return 执行任务结果future
      */
     public CompletableFuture<Void> run() {
+        if (hasCycle()) {
+            CompletableFuture<Void> future = new CompletableFuture<>();
+            future.completeExceptionally(new RuntimeException("执行图有环!!!"));
+            return future;
+        }
         if (taskMap.isEmpty()) {
             CompletableFuture<Void> future = new CompletableFuture<>();
             future.complete(null);
@@ -129,5 +143,39 @@ public class GraphEngine {
         Object result = task.run(runContext);
         runContext.putResult(task.getName(), result);
         return result;
+    }
+
+    public boolean hasCycle() {
+        if (taskMap.isEmpty()) {
+            return false;
+        }
+        Map<String, Set<String>> outEdgeMap = new HashMap<>();
+        taskMap.forEach((taskName, dependentTaskSet) -> {
+            for (Task task : dependentTaskSet) {
+                outEdgeMap.computeIfAbsent(task.getName(), unused -> new HashSet<>()).add(taskName);
+            }
+        });
+        Map<String, VisitState> visitMap = new HashMap<>();
+        for (String taskName : name2TaskMap.keySet()) {
+            if (visitMap.getOrDefault(taskName, VisitState.NOT) == VisitState.NOT && hasCycle(outEdgeMap, visitMap, taskName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasCycle(Map<String, Set<String>> outEdgeMap, Map<String, VisitState> visitMap, String taskName) {
+        visitMap.put(taskName, VisitState.RUNNING);
+        Set<String> outTaskNameSet = outEdgeMap.getOrDefault(taskName, Collections.emptySet());
+        for (String outTaskName : outTaskNameSet) {
+            VisitState outTaskState = visitMap.getOrDefault(outTaskName, VisitState.NOT);
+            if (outTaskState == VisitState.NOT && hasCycle(outEdgeMap, visitMap, outTaskName)) {
+                return true;
+            } else if (outTaskState == VisitState.RUNNING) {
+                return true;
+            }
+        }
+        visitMap.put(taskName, VisitState.END);
+        return false;
     }
 }
