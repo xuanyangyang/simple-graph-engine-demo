@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 public class GraphEngineTests {
 
     /**
-     *
+     * 构建如images/graph1所示的图
      */
     @Test
     public void test() {
@@ -47,6 +47,7 @@ public class GraphEngineTests {
 
     /**
      * 有环判断
+     * 构建如images/graph2所示的图
      */
     @Test
     public void testCycle() {
@@ -64,7 +65,8 @@ public class GraphEngineTests {
 
         graphEngine.addTaskDependentTask("a", "b");
         graphEngine.addTaskDependentTask("a", "c");
-        graphEngine.addTaskDependentTask("c", "d", "e", "a");
+        graphEngine.addTaskDependentTask("c", "d", "e");
+        graphEngine.addTaskDependentTask("e", "a");
 
         boolean hasCycle = graphEngine.hasCycle();
         PrintUtils.print("是否有环:" + hasCycle);
